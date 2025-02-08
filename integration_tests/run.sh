@@ -1,10 +1,10 @@
 #!/bin/bash
 
 echo "::group::Build katana"
-rm integration-test katana 2>/dev/null
-cd ../cmd/katana
+rm integration-test katana-ng 2>/dev/null
+cd ../cmd/katana-ng
 go build
-mv katana ../../integration_tests/katana
+mv katana-ng ../../integration_tests/katana-ng
 echo "::endgroup::"
 
 echo "::group::Build katana integration-test"

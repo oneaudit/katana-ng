@@ -12,7 +12,7 @@ go build -o functional-test$extension
 echo "::endgroup::"
 
 echo "::group::Building katana binary from current branch"
-go build -o katana_dev$extension ../katana
+go build -o katana_dev$extension ../katana-ng
 echo "::endgroup::"
 
 

@@ -3,7 +3,7 @@ RUN apk add --no-cache git gcc musl-dev
 WORKDIR /app
 COPY . /app
 RUN go mod download
-RUN go build ./cmd/katana
+RUN go build ./cmd/katana-ng
 
 FROM alpine:3.20.3
 RUN apk add --no-cache bind-tools ca-certificates chromium
