@@ -8,10 +8,10 @@ import (
 	"net/url"
 	"time"
 
+	"github.com/oneaudit/katana-ng/pkg/navigation"
+	"github.com/oneaudit/katana-ng/pkg/types"
 	"github.com/projectdiscovery/fastdialer/fastdialer"
 	"github.com/projectdiscovery/fastdialer/fastdialer/ja3/impersonate"
-	"github.com/projectdiscovery/katana/pkg/navigation"
-	"github.com/projectdiscovery/katana/pkg/types"
 	"github.com/projectdiscovery/retryablehttp-go"
 	errorutil "github.com/projectdiscovery/utils/errors"
 	proxyutil "github.com/projectdiscovery/utils/proxy"

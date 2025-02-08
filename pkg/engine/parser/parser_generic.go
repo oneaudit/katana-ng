@@ -7,9 +7,9 @@ import (
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
-	"github.com/projectdiscovery/katana/pkg/navigation"
-	"github.com/projectdiscovery/katana/pkg/types"
-	"github.com/projectdiscovery/katana/pkg/utils"
+	"github.com/oneaudit/katana-ng/pkg/navigation"
+	"github.com/oneaudit/katana-ng/pkg/types"
+	"github.com/oneaudit/katana-ng/pkg/utils"
 )
 
 func InitWithOptions(options *types.Options) {

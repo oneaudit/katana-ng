@@ -7,9 +7,9 @@ import (
 	"github.com/go-rod/rod"
 	"github.com/go-rod/rod/lib/launcher"
 	"github.com/go-rod/rod/lib/launcher/flags"
+	"github.com/oneaudit/katana-ng/pkg/engine/common"
+	"github.com/oneaudit/katana-ng/pkg/types"
 	"github.com/projectdiscovery/gologger"
-	"github.com/projectdiscovery/katana/pkg/engine/common"
-	"github.com/projectdiscovery/katana/pkg/types"
 	errorutil "github.com/projectdiscovery/utils/errors"
 	urlutil "github.com/projectdiscovery/utils/url"
 )

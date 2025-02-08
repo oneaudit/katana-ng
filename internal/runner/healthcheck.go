@@ -7,8 +7,8 @@ import (
 	"runtime"
 	"strings"
 
+	"github.com/oneaudit/katana-ng/pkg/types"
 	"github.com/projectdiscovery/goflags"
-	"github.com/projectdiscovery/katana/pkg/types"
 	fileutil "github.com/projectdiscovery/utils/file"
 	permissionutil "github.com/projectdiscovery/utils/permission"
 )

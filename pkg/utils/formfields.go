@@ -3,7 +3,7 @@ package utils
 import (
 	"strings"
 
-	"github.com/projectdiscovery/katana/pkg/navigation"
+	"github.com/oneaudit/katana-ng/pkg/navigation"
 
 	"github.com/PuerkitoBio/goquery"
 	"github.com/projectdiscovery/utils/generic"

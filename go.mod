@@ -2,8 +2,6 @@ module github.com/oneaudit/katana-ng
 
 go 1.23
 
-replace github.com/projectdiscovery/katana => ./
-
 require (
 	github.com/BishopFox/jsluice v0.0.0-20240110145140-0ddfab153e06
 	github.com/PuerkitoBio/goquery v1.10.1
@@ -18,7 +16,6 @@ require (
 	github.com/projectdiscovery/goflags v0.1.70
 	github.com/projectdiscovery/gologger v1.1.43
 	github.com/projectdiscovery/hmap v0.0.78
-	github.com/projectdiscovery/katana v1.1.2
 	github.com/projectdiscovery/mapcidr v1.1.34
 	github.com/projectdiscovery/ratelimit v0.0.71
 	github.com/projectdiscovery/retryablehttp-go v1.0.98

@@ -7,10 +7,10 @@ import (
 	"regexp"
 	"strings"
 
+	"github.com/oneaudit/katana-ng/pkg/types"
+	"github.com/oneaudit/katana-ng/pkg/utils"
 	"github.com/projectdiscovery/gologger"
 	"github.com/projectdiscovery/gologger/formatter"
-	"github.com/projectdiscovery/katana/pkg/types"
-	"github.com/projectdiscovery/katana/pkg/utils"
 	errorutil "github.com/projectdiscovery/utils/errors"
 	fileutil "github.com/projectdiscovery/utils/file"
 	"gopkg.in/yaml.v3"

@@ -5,10 +5,10 @@ import (
 	"strings"
 	"time"
 
+	"github.com/oneaudit/katana-ng/pkg/output"
 	"github.com/projectdiscovery/goflags"
 	"github.com/projectdiscovery/gologger"
 	"github.com/projectdiscovery/gologger/levels"
-	"github.com/projectdiscovery/katana/pkg/output"
 	fileutil "github.com/projectdiscovery/utils/file"
 	logutil "github.com/projectdiscovery/utils/log"
 )

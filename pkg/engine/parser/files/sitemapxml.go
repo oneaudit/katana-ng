@@ -7,8 +7,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/projectdiscovery/katana/pkg/navigation"
-	"github.com/projectdiscovery/katana/pkg/utils"
+	"github.com/oneaudit/katana-ng/pkg/navigation"
+	"github.com/oneaudit/katana-ng/pkg/utils"
 	"github.com/projectdiscovery/retryablehttp-go"
 	errorutil "github.com/projectdiscovery/utils/errors"
 )

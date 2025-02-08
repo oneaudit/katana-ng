@@ -8,8 +8,8 @@ import (
 	"strings"
 
 	"github.com/logrusorgru/aurora"
+	"github.com/oneaudit/katana-ng/internal/testutils"
 	"github.com/pkg/errors"
-	"github.com/projectdiscovery/katana/internal/testutils"
 )
 
 var (

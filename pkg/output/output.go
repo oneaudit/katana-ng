@@ -13,9 +13,9 @@ import (
 	jsoniter "github.com/json-iterator/go"
 	"github.com/logrusorgru/aurora"
 	"github.com/mitchellh/mapstructure"
+	"github.com/oneaudit/katana-ng/pkg/utils/extensions"
 	"github.com/projectdiscovery/dsl"
 	"github.com/projectdiscovery/gologger"
-	"github.com/projectdiscovery/katana/pkg/utils/extensions"
 	errorutil "github.com/projectdiscovery/utils/errors"
 	fileutil "github.com/projectdiscovery/utils/file"
 )

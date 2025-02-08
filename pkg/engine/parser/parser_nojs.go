@@ -2,7 +2,7 @@
 
 package parser
 
-import "github.com/projectdiscovery/katana/pkg/types"
+import "github.com/oneaudit/katana-ng/pkg/types"
 
 func InitWithOptions(options *types.Options) {
 	if options.AutomaticFormFill {

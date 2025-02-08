@@ -3,7 +3,7 @@ package output
 import (
 	"regexp"
 
-	"github.com/projectdiscovery/katana/pkg/utils/extensions"
+	"github.com/oneaudit/katana-ng/pkg/utils/extensions"
 )
 
 // Options contains the configuration options for output writer
