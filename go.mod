@@ -1,4 +1,4 @@
-module github.com/projectdiscovery/katana
+module github.com/oneaudit/katana-ng
 
 go 1.21
 
