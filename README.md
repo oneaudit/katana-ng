@@ -3,7 +3,7 @@
   <br>
 </h1>
 
-<h4 align="center">Fork of [katana](https://github.com/projectdiscovery/katana) from Project Discovery.</h4>
+<h4 align="center">Fork of <a href="https://github.com/projectdiscovery/katana">katana</a> from Project Discovery.</h4>
 
 ## Disable Default Extension Filter
 
@@ -17,3 +17,9 @@ FILTER:
 ```
 
 ✍️ We will now see `.txt`, `.zip`, etc. files in the output.
+
+## Known Files
+
+Katana supports `robots.txt` and `sitemap.xml`. They are parsed and used to discover new endpoints, but they never appear themselves in the list of valid endpoints.
+
+✍️ We will now see `/robots.txt` and `/sitemap.xml` when they were crawled.

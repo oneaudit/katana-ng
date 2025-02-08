@@ -33,7 +33,7 @@ func (r *sitemapXmlCrawler) Visit(URL string) (navigationRequests []*navigation.
 	}
 	defer resp.Body.Close()
 
-	navigationRequests, err = r.parseReader(resp.Body, resp)
+	navigationRequests, err = r.parseReader(resp.Body, resp, URL)
 	if err != nil {
 		return nil, errorutil.NewWithTag("sitemapcrawler", "could not parse sitemap").Wrap(err)
 	}
@@ -49,7 +49,16 @@ type parsedURL struct {
 	Loc string `xml:"loc"`
 }
 
-func (r *sitemapXmlCrawler) parseReader(reader io.Reader, resp *http.Response) (navigationRequests []*navigation.Request, err error) {
+func (r *sitemapXmlCrawler) parseReader(reader io.Reader, resp *http.Response, baseURL string) (navigationRequests []*navigation.Request, err error) {
+	// Add the source to the list
+	navRequest := navigation.NewNavigationRequestURLFromResponse(resp.Request.URL.Path, baseURL, "known-files", "sitemapxml", &navigation.Response{
+		Depth:      1,
+		Resp:       resp,
+		StatusCode: resp.StatusCode,
+		Headers:    utils.FlattenHeaders(resp.Header),
+	})
+	navigationRequests = append(navigationRequests, navRequest)
+
 	sitemap := sitemapStruct{}
 	if err := xml.NewDecoder(reader).Decode(&sitemap); err != nil {
 		return nil, errorutil.NewWithTag("sitemapcrawler", "could not decode xml").Wrap(err)

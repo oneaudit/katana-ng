@@ -33,10 +33,19 @@ func (r *robotsTxtCrawler) Visit(URL string) ([]*navigation.Request, error) {
 	}
 	defer resp.Body.Close()
 
-	return r.parseReader(resp.Body, resp)
+	return r.parseReader(resp.Body, resp, URL)
 }
 
-func (r *robotsTxtCrawler) parseReader(reader io.Reader, resp *http.Response) (navigationRequests []*navigation.Request, err error) {
+func (r *robotsTxtCrawler) parseReader(reader io.Reader, resp *http.Response, baseURL string) (navigationRequests []*navigation.Request, err error) {
+	// Add the source to the list
+	navRequest := navigation.NewNavigationRequestURLFromResponse(resp.Request.URL.Path, baseURL, "known-files", "robotstxt", &navigation.Response{
+		Depth:      1,
+		Resp:       resp,
+		StatusCode: resp.StatusCode,
+		Headers:    utils.FlattenHeaders(resp.Header),
+	})
+	navigationRequests = append(navigationRequests, navRequest)
+
 	scanner := bufio.NewScanner(reader)
 	for scanner.Scan() {
 		text := scanner.Text()
