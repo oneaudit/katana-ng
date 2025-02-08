@@ -26,13 +26,14 @@ Disallow: /test/includes/
 Sitemap: https://example.com/sitemap.xml`
 	parsed, err := urlutil.Parse("http://localhost/robots.txt")
 	require.Nil(t, err)
-	navigationRequests, err := crawler.parseReader(strings.NewReader(content), &http.Response{Request: &http.Request{URL: parsed.URL}})
+	navigationRequests, err := crawler.parseReader(strings.NewReader(content), &http.Response{Request: &http.Request{URL: parsed.URL}}, "http://localhost/")
 	require.Nil(t, err)
 
 	for _, navReq := range navigationRequests {
 		requests = append(requests, navReq.URL)
 	}
 	require.ElementsMatch(t, requests, []string{
+		"http://localhost/robots.txt",
 		"http://localhost/test/includes/",
 		"http://localhost/test/misc/known-files/robots.txt.found",
 	}, "could not get correct elements")

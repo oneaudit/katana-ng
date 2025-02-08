@@ -3,38 +3,38 @@ env:
 before:
   hooks:
     - go mod tidy
-project_name: katana
+project_name: katana-ng
 builds:
-  - id: katana-linux-amd64-generic
+  - id: katana-ng-linux-amd64-generic
     ldflags:
       - -s -w
-    binary: katana
+    binary: katana-ng
     env:
       - CGO_ENABLED=1
-    main: ./cmd/katana/main.go
+    main: ./cmd/katana-ng/main.go
     goos:
       - linux
     goarch:
       - amd64
 
-  - id: katana-linux-i386-generic
+  - id: katana-ng-linux-i386-generic
     ldflags:
       - -s -w
-    binary: katana
-    main: ./cmd/katana/main.go
+    binary: katana-ng
+    main: ./cmd/katana-ng/main.go
     goos:
       - linux
     goarch:
       - 386
 
-  - id: katana-linux-arm
+  - id: katana-ng-linux-arm
     ldflags:
       - -s -w
-    binary: katana
+    binary: katana-ng
     env:
       - CGO_ENABLED=1
       - CC=aarch64-linux-gnu-gcc
-    main: ./cmd/katana/main.go
+    main: ./cmd/katana-ng/main.go
     goos:
       - linux
     goarch:

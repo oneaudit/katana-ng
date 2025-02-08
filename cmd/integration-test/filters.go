@@ -48,7 +48,7 @@ func (h *filterConditionIntegrationTest) Execute() error {
 var ExtraDebugArgs = []string{}
 
 func RunKatanaAndGetResults(debug bool, extra ...string) ([]string, error) {
-	cmd := exec.Command("./katana")
+	cmd := exec.Command("./katana-ng")
 	extra = append(extra, ExtraDebugArgs...)
 	cmd.Args = append(cmd.Args, extra...)
 	cmd.Args = append(cmd.Args, "-duc") // disable auto updates

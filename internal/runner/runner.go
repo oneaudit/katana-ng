@@ -64,13 +64,13 @@ func New(options *types.Options) (*Runner, error) {
 	}
 
 	if !options.DisableUpdateCheck {
-		latestVersion, err := updateutils.GetToolVersionCallback("katana", version)()
+		latestVersion, err := updateutils.GetToolVersionCallback("katana-ng", version)()
 		if err != nil {
 			if options.Verbose {
-				gologger.Error().Msgf("katana version check failed: %v", err.Error())
+				gologger.Error().Msgf("katana-ng version check failed: %v", err.Error())
 			}
 		} else {
-			gologger.Info().Msgf("Current katana version %v %v", version, updateutils.GetVersionDescription(version, latestVersion))
+			gologger.Info().Msgf("Current katana-ng version %v %v", version, updateutils.GetVersionDescription(version, latestVersion))
 		}
 	}
 

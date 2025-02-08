@@ -120,7 +120,7 @@ pipelines offering both headless and non-headless crawling.`)
 		flagSet.StringVar(&options.Proxy, "proxy", "", "http/socks5 proxy to use"),
 		flagSet.BoolVarP(&options.TechDetect, "tech-detect", "td", false, "enable technology detection"),
 		flagSet.StringSliceVarP(&options.CustomHeaders, "headers", "H", nil, "custom header/cookie to include in all http request in header:value format (file)", goflags.FileStringSliceOptions),
-		flagSet.StringVar(&cfgFile, "config", "", "path to the katana configuration file"),
+		flagSet.StringVar(&cfgFile, "config", "", "path to the katana-ng configuration file"),
 		flagSet.StringVarP(&options.FormConfig, "form-config", "fc", "", "path to custom form configuration file"),
 		flagSet.StringVarP(&options.FieldConfig, "field-config", "flc", "", "path to custom field configuration file"),
 		flagSet.StringVarP(&options.Strategy, "strategy", "s", "depth-first", "Visit strategy (depth-first, breadth-first)"),
@@ -137,7 +137,7 @@ pipelines offering both headless and non-headless crawling.`)
 
 	flagSet.CreateGroup("headless", "Headless",
 		flagSet.BoolVarP(&options.Headless, "headless", "hl", false, "enable headless hybrid crawling (experimental)"),
-		flagSet.BoolVarP(&options.UseInstalledChrome, "system-chrome", "sc", false, "use local installed chrome browser instead of katana installed"),
+		flagSet.BoolVarP(&options.UseInstalledChrome, "system-chrome", "sc", false, "use local installed chrome browser instead of katana-ng installed"),
 		flagSet.BoolVarP(&options.ShowBrowser, "show-browser", "sb", false, "show the browser on the screen with headless mode"),
 		flagSet.StringSliceVarP(&options.HeadlessOptionalArguments, "headless-options", "ho", nil, "start headless chrome with additional options", goflags.FileCommaSeparatedStringSliceOptions),
 		flagSet.BoolVarP(&options.HeadlessNoSandbox, "no-sandbox", "nos", false, "start headless chrome in --no-sandbox mode"),
@@ -178,8 +178,8 @@ pipelines offering both headless and non-headless crawling.`)
 	)
 
 	flagSet.CreateGroup("update", "Update",
-		flagSet.CallbackVarP(runner.GetUpdateCallback(), "update", "up", "update katana to latest version"),
-		flagSet.BoolVarP(&options.DisableUpdateCheck, "disable-update-check", "duc", false, "disable automatic katana update check"),
+		flagSet.CallbackVarP(runner.GetUpdateCallback(), "update", "up", "update katana-ng to latest version"),
+		flagSet.BoolVarP(&options.DisableUpdateCheck, "disable-update-check", "duc", false, "disable automatic katana-ng update check"),
 	)
 
 	flagSet.CreateGroup("output", "Output",
@@ -224,7 +224,7 @@ func defaultResumeFilename() string {
 	if err != nil {
 		gologger.Fatal().Msgf("could not get home directory: %s", err)
 	}
-	configDir := filepath.Join(homedir, ".config", "katana")
+	configDir := filepath.Join(homedir, ".config", "katana-ng")
 	return filepath.Join(configDir, fmt.Sprintf("resume-%s.cfg", xid.New().String()))
 }
 
@@ -234,7 +234,7 @@ func cleanupOldResumeFiles() {
 	if err != nil {
 		gologger.Fatal().Msgf("could not get home directory: %s", err)
 	}
-	root := filepath.Join(homedir, ".config", "katana")
+	root := filepath.Join(homedir, ".config", "katana-ng")
 	filter := fileutil.FileFilters{
 		OlderThan: 24 * time.Hour * 10, // cleanup on the 10th day
 		Prefix:    "resume-",

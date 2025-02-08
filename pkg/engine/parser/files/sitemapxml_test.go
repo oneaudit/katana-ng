@@ -23,12 +23,13 @@ func TestSitemapXmlParseReader(t *testing.T) {
 </sitemapindex>`
 	parsed, err := urlutil.Parse("http://security-crawl-maze.app/sitemap.xml")
 	require.Nil(t, err)
-	navigationRequests, err := crawler.parseReader(strings.NewReader(content), &http.Response{Request: &http.Request{URL: parsed.URL}})
+	navigationRequests, err := crawler.parseReader(strings.NewReader(content), &http.Response{Request: &http.Request{URL: parsed.URL}}, "http://security-crawl-maze.app/")
 	require.Nil(t, err)
 	for _, navReq := range navigationRequests {
 		requests = append(requests, navReq.URL)
 	}
 	require.ElementsMatch(t, requests, []string{
+		"http://security-crawl-maze.app/sitemap.xml",
 		"http://security-crawl-maze.app/test/misc/known-files/sitemap.xml.found",
 	}, "could not get correct elements")
 }

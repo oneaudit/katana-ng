@@ -18,16 +18,16 @@ jobs:
 
       - name: Build
         run: go build .
-        working-directory: cmd/katana/
+        working-directory: cmd/katana-ng/
 
       - name: Run Katana Standard
-        run: ./katana -u https://security-crawl-maze.app/ -kf all -jc -jsluice -d 10 -o output_standard.txt -cos node_modules
-        working-directory: cmd/katana
+        run: ./katana-ng -u https://security-crawl-maze.app/ -kf all -jc -jsluice -d 10 -o output_standard.txt -cos node_modules
+        working-directory: cmd/katana-ng
         
       - name: Run Katana Headless
-        run: ./katana -u https://security-crawl-maze.app/ -kf all -jc -jsluice -d 10 -headless -o output_headless.txt -cos node_modules
-        working-directory: cmd/katana
+        run: ./katana-ng -u https://security-crawl-maze.app/ -kf all -jc -jsluice -d 10 -headless -o output_headless.txt -cos node_modules
+        working-directory: cmd/katana-ng
 
       - name: Run Score
-        run: go build .; ./crawl-maze-score ../../katana/output_standard.txt ../../katana/output_headless.txt
+        run: go build .; ./crawl-maze-score ../../katana-ng/output_standard.txt ../../katana-ng/output_headless.txt
         working-directory: cmd/tools/crawl-maze-score

@@ -119,7 +119,7 @@ func initExampleFormFillConfig() error {
 	if err != nil {
 		return errorutil.NewWithErr(err).Msgf("could not get home directory")
 	}
-	defaultConfig := filepath.Join(homedir, ".config", "katana", "form-config.yaml")
+	defaultConfig := filepath.Join(homedir, ".config", "katana-ng", "form-config.yaml")
 
 	if fileutil.FileExists(defaultConfig) {
 		return readCustomFormConfig(defaultConfig)

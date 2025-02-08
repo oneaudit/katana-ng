@@ -37,4 +37,4 @@ jobs:
           context: .
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: projectdiscovery/katana:latest,projectdiscovery/katana:${{ steps.meta.outputs.TAG }}
+          tags: projectdiscovery/katana-ng:latest,projectdiscovery/katana-ng:${{ steps.meta.outputs.TAG }}

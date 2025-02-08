@@ -3,15 +3,15 @@ env:
 before:
   hooks:
     - go mod tidy
-project_name: katana
+project_name: katana-ng
 builds:
-  - id: katana-windows
+  - id: katana-ng-windows
     ldflags:
       - -s -w
-    binary: katana
+    binary: katana-ng
     env:
     - CGO_ENABLED=1
-    main: ./cmd/katana/main.go
+    main: ./cmd/katana-ng/main.go
     goos:
       - windows
     goarch:

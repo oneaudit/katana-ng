@@ -24,6 +24,6 @@ func showBanner() {
 func GetUpdateCallback() func() {
 	return func() {
 		showBanner()
-		updateutils.GetUpdateToolCallback("katana", version)()
+		updateutils.GetUpdateToolCallback("katana-ng", version)()
 	}
 }

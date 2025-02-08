@@ -11,7 +11,7 @@ import (
 )
 
 var libraryTestcases = map[string]TestCase{
-	"katana as library": &goIntegrationTest{},
+	"katana-ng as library": &goIntegrationTest{},
 }
 
 type goIntegrationTest struct{}
