@@ -31,6 +31,8 @@ type Options struct {
 	NoScope bool
 	// DisplayOutScope displays out of scope items in results
 	DisplayOutScope bool
+	// InvestigateDirectories enable inspection of all directories in a path
+	InvestigateDirectories bool
 	// ExtensionsMatch contains extensions to match explicitly
 	ExtensionsMatch goflags.StringSlice
 	// ExtensionFilter contains additional items for filter list

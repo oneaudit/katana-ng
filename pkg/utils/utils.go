@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"fmt"
+	"net/url"
 	"strings"
 
 	"github.com/lukasbob/srcset"
@@ -65,7 +67,7 @@ func ParseRefreshTag(value string) string {
 
 // WebUserAgent returns the chrome-web user agent
 func WebUserAgent() string {
-        return "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
+	return "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/113.0.0.0 Safari/537.36"
 }
 
 func FlattenHeaders(headers map[string][]string) map[string]string {
@@ -89,4 +91,28 @@ func ReplaceAllQueryParam(reqUrl, val string) string {
 	})
 	u.RawQuery = params.Encode()
 	return u.String()
+}
+
+func ExplodeURLInPaths(URL string) (URLs []string) {
+	parsedURL, err := url.Parse(URL)
+	if err != nil {
+		gologger.Info().Msgf("Error parsing URL: %s", err)
+		return
+	}
+	pathSegments := strings.Split(parsedURL.Path, "/")
+	baseURL := fmt.Sprintf("%s://%s", parsedURL.Scheme, parsedURL.Host)
+
+	// The first entry is the first "/"
+	if len(pathSegments) <= 2 {
+		return
+	}
+	pathSegments = pathSegments[1:]
+
+	// The second entry is the file (skip) OR a folder if length > 3 (don't)
+	// Which is why we skip index=0 but don't remove it from the array
+	for i := 1; i < len(pathSegments); i++ {
+		subPath := strings.Join(pathSegments[:i], "/")
+		URLs = append(URLs, fmt.Sprintf("%s/%s/", baseURL, subPath))
+	}
+	return
 }

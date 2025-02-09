@@ -154,6 +154,7 @@ pipelines offering both headless and non-headless crawling.`)
 		flagSet.StringVarP(&options.FieldScope, "field-scope", "fs", "rdn", "pre-defined scope field (dn,rdn,fqdn) or custom regex (e.g., '(company-staging.io|company.com)')"),
 		flagSet.BoolVarP(&options.NoScope, "no-scope", "ns", false, "disables host based default scope"),
 		flagSet.BoolVarP(&options.DisplayOutScope, "display-out-scope", "do", false, "display external endpoint from scoped crawling"),
+		flagSet.BoolVarP(&options.InvestigateDirectories, "investigate-directories", "id", false, "enable inspection of all directories in a path"),
 	)
 
 	availableFields := strings.Join(output.FieldNames, ",")

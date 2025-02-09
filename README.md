@@ -18,8 +18,25 @@ FILTER:
 
 ✍️ We will now see `.txt`, `.zip`, etc. files in the output.
 
+## Investigate Directories
+
+By default, Katana doesn't investigate directories in a path. If the crawler detected the following URL: `/assets/img/image.jpg`, it won't investigate `/assets` which may have directory listing enabled. While this behavior is fair enough, we would have to run Katana multiple times if we want to investigate links in the discovered files.
+
+```console
+SCOPE:
+   ...
+   -id, -investigate-directories  enable inspection of all directories in a path
+   ...
+```
+
+✍️ Folders `/assets/`, `/assets/img/`, etc. will be crawled and shown in the output.
+
 ## Known Files
 
 Katana supports `robots.txt` and `sitemap.xml`. They are parsed and used to discover new endpoints, but they never appear themselves in the list of valid endpoints.
+
+* [x] Robots.txt
+* [x] Sitemap.xml
+* [ ] ...
 
 ✍️ We will now see `/robots.txt` and `/sitemap.xml` when they were crawled.

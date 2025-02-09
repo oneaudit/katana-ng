@@ -24,6 +24,7 @@ const (
 	headerParser responseParserType = iota + 1
 	bodyParser
 	contentParser
+	urlParser
 )
 
 type responseParser struct {
@@ -80,7 +81,23 @@ func ParseResponse(resp *navigation.Response) (navigationRequests []*navigation.
 			navigationRequests = append(navigationRequests, parser.parserFunc(resp)...)
 		case parser.parserType == contentParser && len(resp.Body) > 0:
 			navigationRequests = append(navigationRequests, parser.parserFunc(resp)...)
+		case parser.parserType == urlParser:
+			navigationRequests = append(navigationRequests, parser.parserFunc(resp)...)
 		}
+	}
+	return
+}
+
+// -------------------------------------------------------------------------
+// Begin URL based parsers
+// -------------------------------------------------------------------------
+
+func urlPathsParser(resp *navigation.Response) (navigationRequests []*navigation.Request) {
+	for _, newURL := range utils.ExplodeURLInPaths(resp.Resp.Request.URL.String()) {
+		navigationRequests = append(
+			navigationRequests,
+			navigation.NewNavigationRequestURLFromResponse(newURL, resp.Resp.Request.URL.String(), "url", "path", resp),
+		)
 	}
 	return
 }
