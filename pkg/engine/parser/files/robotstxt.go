@@ -38,7 +38,7 @@ func (r *robotsTxtCrawler) Visit(URL string) ([]*navigation.Request, error) {
 
 func (r *robotsTxtCrawler) parseReader(reader io.Reader, resp *http.Response, baseURL string) (navigationRequests []*navigation.Request, err error) {
 	// Add the source to the list
-	if resp.StatusCode == http.StatusOK {
+	if resp.StatusCode == http.StatusOK && strings.HasPrefix(resp.Header.Get("Content-Type"), "text/plain") {
 		navRequest := navigation.NewNavigationRequestURLFromResponse(resp.Request.URL.Path, baseURL, "known-files", "robotstxt", &navigation.Response{
 			Depth:      1,
 			Resp:       resp,

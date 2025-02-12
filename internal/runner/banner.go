@@ -9,10 +9,10 @@ var banner = (`
    __        __                
   / /_____ _/ /____ ____  ___ _
  /  '_/ _  / __/ _  / _ \/ _  /
-/_/\_\\_,_/\__/\_,_/_//_/\_,_/							 
+/_/\_\\_,_/\__/\_,_/_//_/\_,_/ NG							 
 `)
 
-var version = "v1.1.2"
+var version = "v1.0.5"
 
 // showBanner is used to show the banner to the user
 func showBanner() {

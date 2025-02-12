@@ -4,6 +4,9 @@ package parser
 
 import (
 	"fmt"
+	"github.com/BishopFox/jsluice"
+	"net/http"
+	"net/url"
 	"strings"
 
 	"github.com/PuerkitoBio/goquery"
@@ -43,7 +46,7 @@ func scriptContentJsluiceParser(resp *navigation.Response) (navigationRequests [
 
 		endpointItems := utils.ExtractJsluiceEndpoints(text)
 		for _, item := range endpointItems {
-			navigationRequests = append(navigationRequests, navigation.NewNavigationRequestURLFromResponse(item.Endpoint, resp.Resp.Request.URL.String(), "script", fmt.Sprintf("jsluice-%s", item.Type), resp))
+			navigationRequests = append(navigationRequests, NewNavigationRequestURLFromJavaScriptEndpoint(item, resp.Resp.Request.URL.String(), "script", fmt.Sprintf("jsluice-%s", item.Type), resp))
 		}
 	})
 	return
@@ -64,7 +67,41 @@ func scriptJSFileJsluiceParser(resp *navigation.Response) (navigationRequests []
 
 	endpointsItems := utils.ExtractJsluiceEndpoints(string(resp.Body))
 	for _, item := range endpointsItems {
-		navigationRequests = append(navigationRequests, navigation.NewNavigationRequestURLFromResponse(item.Endpoint, resp.Resp.Request.URL.String(), "js", fmt.Sprintf("jsluice-%s", item.Type), resp))
+		navigationRequests = append(navigationRequests, NewNavigationRequestURLFromJavaScriptEndpoint(item, resp.Resp.Request.URL.String(), "js", fmt.Sprintf("jsluice-%s", item.Type), resp))
 	}
 	return
+}
+
+func NewNavigationRequestURLFromJavaScriptEndpoint(item *jsluice.URL, source, tag, attribute string, resp *navigation.Response) *navigation.Request {
+	requestURL := resp.AbsoluteURL(item.URL)
+
+	var request *navigation.Request
+	if item.Method == "" {
+		item.Method = http.MethodGet
+	}
+
+	if len(item.QueryParams) > 0 {
+		parsedURL, err := url.Parse(requestURL)
+		if err == nil {
+			query := parsedURL.Query()
+			for _, param := range item.QueryParams {
+				query.Set(param, "katana")
+			}
+			parsedURL.RawQuery = query.Encode()
+			requestURL = parsedURL.String()
+		}
+	}
+
+	request = &navigation.Request{
+		Method:       item.Method,
+		URL:          requestURL,
+		RootHostname: resp.RootHostname,
+		Depth:        resp.Depth,
+		Source:       source,
+		Attribute:    attribute,
+		Tag:          tag,
+		Headers:      item.Headers,
+	}
+
+	return request
 }

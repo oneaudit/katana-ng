@@ -31,6 +31,12 @@ SCOPE:
 
 ✍️ Folders `/assets/`, `/assets/img/`, etc. will be crawled and shown in the output.
 
+## JSLuice Improved Support
+
+The [jsluice](https://github.com/BishopFox/jsluice) tool is only available on Linux, by design, and it will still only work on Linux. Katana runs it on embed script tags and external files when using `-jsluice`. The main issue was that only a part of JSLuice output was used. Headers or HTTP methods detected by the tool were ignored by katana.
+
+✍️ Katana-ng will properly make use of information returned by JSLuice to crawl detected endpoints using correct HTTP methods and headers.
+
 ## Known Files
 
 Katana supports `robots.txt` and `sitemap.xml`. They are parsed and used to discover new endpoints, but they never appear themselves in the list of valid endpoints.
