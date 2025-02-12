@@ -1,0 +1,39 @@
+headless: false
+show-browser: false
+headless-options: []
+chrome-data-dir: .chrome/
+list:
+  - "http://localhost:5000/"
+
+max-response-size: 4194304
+delay: 0
+rate-limit: 150
+timeout: 10
+retry: 1
+concurrency: 10
+parallelism: 10
+#proxy: http://localhost:8080
+
+keep-stdout-simple: true
+
+depth: 5
+strategy: depth-first
+disable-redirects: false
+display-out-scope: false
+investigate-directories: true
+disable-default-extension-filter: true
+field-scope: rdn
+
+known-files: all
+automatic-form-fill: true
+js-crawl: true
+jsluice: true
+xhr-extraction: true
+
+update: false
+disable-update-check: true
+
+output: output.txt
+jsonl: true
+silent: true
+verbose: true
