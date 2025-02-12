@@ -9,6 +9,8 @@
 
 By default, Katana crawls all URLs but only displays URLs matching the extension filter. You can tune this filtering with `-em` and `-ef` flags, but there is no flag to match all extensions, as many are filtered by default.
 
+Another issue is that when using `-em`, files with no extension are filtered.
+
 ```console
 FILTER:
    ...
@@ -16,7 +18,7 @@ FILTER:
    ...
 ```
 
-✍️ With `-ddef`, you will now see `.txt`, `.zip`, and other file types in the output.
+✍️ With `-ddef`, you will now see `.txt`, `.zip`, and other file types in the output without using `-em`.
 
 ## Investigate Directories
 
