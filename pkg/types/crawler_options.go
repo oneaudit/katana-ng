@@ -80,6 +80,7 @@ func NewCrawlerOptions(options *Options) (*CrawlerOptions, error) {
 		ExtensionValidator:    extensionsValidator,
 		OutputMatchCondition:  options.OutputMatchCondition,
 		OutputFilterCondition: options.OutputFilterCondition,
+		KeepStdoutSimple:      options.KeepStdoutSimple,
 	}
 
 	for _, mr := range options.OutputMatchRegex {

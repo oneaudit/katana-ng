@@ -194,6 +194,7 @@ pipelines offering both headless and non-headless crawling.`)
 		flagSet.BoolVarP(&options.JSON, "jsonl", "j", false, "write output in jsonl format"),
 		flagSet.BoolVarP(&options.NoColors, "no-color", "nc", false, "disable output content coloring (ANSI escape codes)"),
 		flagSet.BoolVar(&options.Silent, "silent", false, "display output only"),
+		flagSet.BoolVarP(&options.KeepStdoutSimple, "keep-stdout-simple", "kss", false, "Keep stdout/logs clean and simple, even when the output file format is JSON."),
 		flagSet.BoolVarP(&options.Verbose, "verbose", "v", false, "display verbose output"),
 		flagSet.BoolVar(&options.Debug, "debug", false, "display debug output"),
 		flagSet.BoolVar(&options.Version, "version", false, "display project version"),

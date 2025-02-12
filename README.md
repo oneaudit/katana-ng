@@ -39,7 +39,22 @@ Katana integrates with the [jsluice](https://github.com/BishopFox/jsluice) tool,
 
 ✍️ Katana-ng makes full use of the information returned by JSLuice, crawling detected endpoints using the correct HTTP methods and headers.
 
-## Known Files
+## Katana Output Options
+
+Katana uses the same output format for both the output file and stdout. While this ensures consistency, it can make the output messy when using `-jsonl`. To address this, we’ve added an option for users who need to check the crawled URLs in stdout without cluttering the console with JSON lines.
+
+```console
+FILTER:
+   ...
+   -kss, -keep-stdout-simple   Keep stdout/logs clean and simple, even when the output file format is JSON.
+   ...
+```
+
+✍️ This option ensures a cleaner stdout while still allowing you to store the output in JSON format.
+
+## Minor Changes
+
+#### Known Files
 
 Katana supports `robots.txt` and `sitemap.xml`. These are parsed to discover new endpoints but are never included in the list of valid endpoints.
 

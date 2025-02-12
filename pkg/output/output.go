@@ -53,6 +53,7 @@ type StandardWriter struct {
 	noClobber             bool
 	omitRaw               bool
 	omitBody              bool
+	simpleStdout          bool
 	errorFile             *fileWriter
 	matchRegex            []*regexp.Regexp
 	filterRegex           []*regexp.Regexp
@@ -79,6 +80,7 @@ func New(options Options) (Writer, error) {
 		extensionValidator:    options.ExtensionValidator,
 		outputMatchCondition:  options.OutputMatchCondition,
 		outputFilterCondition: options.OutputFilterCondition,
+		simpleStdout:          options.KeepStdoutSimple,
 	}
 
 	if options.StoreFieldDir != "" {
@@ -216,7 +218,16 @@ func (w *StandardWriter) Write(result *Result) error {
 	w.outputMutex.Lock()
 	defer w.outputMutex.Unlock()
 
-	gologger.Silent().Msgf("%s", string(data))
+	if w.simpleStdout && w.json {
+		simpleData, err := w.formatScreen(result)
+		if err != nil {
+			return errorutil.NewWithTag("output", "could not format output").Wrap(err)
+		}
+		gologger.Silent().Msgf("%s", string(simpleData))
+	} else {
+		gologger.Silent().Msgf("%s", string(data))
+	}
+
 	if w.outputFile != nil {
 		if !w.json {
 			data = decolorizerRegex.ReplaceAll(data, []byte(""))

@@ -85,6 +85,8 @@ type Options struct {
 	NoColors bool
 	// JSON enables writing output in JSON format
 	JSON bool
+	// KeepStdoutSimple keep stdout/logs clean and simple, even when the output file format is JSON.
+	KeepStdoutSimple bool
 	// Silent shows only output
 	Silent bool
 	// Verbose specifies showing verbose output
