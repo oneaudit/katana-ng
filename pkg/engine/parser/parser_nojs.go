@@ -16,7 +16,7 @@ func InitWithOptions(options *types.Options) {
 	if !options.DisableRedirects {
 		responseParsers = append(responseParsers, responseParser{headerParser, headerLocationParser})
 	}
-	if !options.InvestigateDirectories {
+	if options.InvestigateDirectories {
 		responseParsers = append(responseParsers, responseParser{urlParser, urlPathsParser})
 	}
 }
