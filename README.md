@@ -7,7 +7,7 @@
 
 ## Disable Default Extension Filter
 
-By default, Katana crawls all URLs, but only displays URLs matching the extension filter. While we can use `-em` to add all the extension we want in the results, enable this flag will remove files with no extensions from the output.
+By default, Katana crawls all URLs but only displays URLs matching the extension filter. We can tune this filtering with `-em` and `-ef`, but there is no flag to match all extensions as many are filtered by default.
 
 ```console
 FILTER:
@@ -16,11 +16,11 @@ FILTER:
    ...
 ```
 
-✍️ We will now see `.txt`, `.zip`, etc. files in the output.
+✍️ We will now see `.txt`, `.zip`, etc. files in the output when using `-ddef`.
 
 ## Investigate Directories
 
-By default, Katana doesn't investigate directories in a path. If the crawler detected the following URL: `/assets/img/image.jpg`, it won't investigate `/assets` which may have directory listing enabled. While this behavior is fair enough, we would have to run Katana multiple times if we want to investigate links in the discovered files.
+By default, Katana doesn't investigate directories in a path. If the crawler detected the following URL: `/assets/img/image.jpg`, it won't investigate `/assets` or `/assets/img/` which may have directory listing enabled. While this behavior is fair, we added a flag if you want the crawler to behave differently.
 
 ```console
 SCOPE:
@@ -29,7 +29,7 @@ SCOPE:
    ...
 ```
 
-✍️ Folders `/assets/`, `/assets/img/`, etc. will be crawled and shown in the output.
+✍️ Folders `/assets/`, `/assets/img/`, etc. will be crawled and shown in the output. By design, they will be shown in the output even if it's 403 or 404.
 
 ## JSLuice Improved Support
 
