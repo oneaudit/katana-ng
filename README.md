@@ -7,7 +7,7 @@
 
 ## Disable Default Extension Filter
 
-By default, Katana crawls all URLs but only displays URLs matching the extension filter. We can tune this filtering with `-em` and `-ef`, but there is no flag to match all extensions as many are filtered by default.
+By default, Katana crawls all URLs but only displays URLs matching the extension filter. You can tune this filtering with `-em` and `-ef` flags, but there is no flag to match all extensions, as many are filtered by default.
 
 ```console
 FILTER:
@@ -16,11 +16,11 @@ FILTER:
    ...
 ```
 
-✍️ We will now see `.txt`, `.zip`, etc. files in the output when using `-ddef`.
+✍️ With `-ddef`, you will now see `.txt`, `.zip`, and other file types in the output.
 
 ## Investigate Directories
 
-By default, Katana doesn't investigate directories in a path. If the crawler detected the following URL: `/assets/img/image.jpg`, it won't investigate `/assets` or `/assets/img/` which may have directory listing enabled. While this behavior is fair, we added a flag if you want the crawler to behave differently.
+By default, Katana doesn't investigate directories in a URL path. For example, if the crawler detects the URL `/assets/img/image.jpg`, it won't investigate `/assets` or `/assets/img/` unless those directories are explicitly listed. While this behavior is expected, you can modify it using the following flag:
 
 ```console
 SCOPE:
@@ -29,17 +29,17 @@ SCOPE:
    ...
 ```
 
-✍️ Folders `/assets/`, `/assets/img/`, etc. will be crawled and shown in the output. By design, they will be shown in the output even if it's 403 or 404.
+✍️ With this flag, folders such as `/assets/` and `/assets/img/` will be crawled. However, note that these folders will still appear in the output, even if they couldn't be crawled due to errors like `403` or `404`.
 
 ## JSLuice Improved Support
 
-The [jsluice](https://github.com/BishopFox/jsluice) tool is only available on Linux, by design, and it will still only work on Linux. Katana runs it on embed script tags and external files when using `-jsluice`. The main issue was that only a part of JSLuice output was used. Headers or HTTP methods detected by the tool were ignored by katana.
+Katana integrates with the [jsluice](https://github.com/BishopFox/jsluice) tool, which can only be compiled on Linux. It is executed on both embedded script tags and external files when using the `-jsluice` flag. Katana only used part of the output from JSLuice, ignoring HTTP methods and headers detected by the tool.
 
-✍️ Katana-ng will properly make use of information returned by JSLuice to crawl detected endpoints using correct HTTP methods and headers.
+✍️ Katana-ng makes full use of the information returned by JSLuice, crawling detected endpoints using the correct HTTP methods and headers.
 
 ## Known Files
 
-Katana supports `robots.txt` and `sitemap.xml`. They are parsed and used to discover new endpoints, but they never appear themselves in the list of valid endpoints.
+Katana supports `robots.txt` and `sitemap.xml`. These are parsed to discover new endpoints but are never included in the list of valid endpoints.
 
 * [x] Robots.txt
 * [x] Sitemap.xml
