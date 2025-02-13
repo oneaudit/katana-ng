@@ -24,11 +24,16 @@ func New(httpclient *retryablehttp.Client, files string) *KnownFiles {
 	case "sitemapxml":
 		crawler := &sitemapXmlCrawler{httpclient: httpclient}
 		parser.parsers = append(parser.parsers, crawler.Visit)
+	case "favicon":
+		crawler := &faviconIcoCrawler{httpclient: httpclient}
+		parser.parsers = append(parser.parsers, crawler.Visit)
 	default:
 		crawler := &robotsTxtCrawler{httpclient: httpclient}
 		parser.parsers = append(parser.parsers, crawler.Visit)
 		another := &sitemapXmlCrawler{httpclient: httpclient}
 		parser.parsers = append(parser.parsers, another.Visit)
+		favicon := &faviconIcoCrawler{httpclient: httpclient}
+		parser.parsers = append(parser.parsers, favicon.Visit)
 	}
 	return parser
 }

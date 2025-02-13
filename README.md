@@ -56,10 +56,10 @@ FILTER:
 
 #### Known Files
 
-Katana supports `robots.txt` and `sitemap.xml`. These are parsed to discover new endpoints but are never included in the list of valid endpoints.
+Katana supports `robots.txt` and `sitemap.xml`. These are parsed to discover new endpoints but are never included in the list of valid endpoints. We added a few others.
 
 * [x] Robots.txt
 * [x] Sitemap.xml
-* [ ] ...
+* [x] Favicon.ico
 
 ✍️ We will now see `/robots.txt` and `/sitemap.xml` when they were crawled.
