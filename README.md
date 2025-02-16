@@ -52,14 +52,15 @@ FILTER:
 
 ✍️ This option ensures a cleaner stdout while still allowing you to store the output in JSON format.
 
-## Minor Changes
+## Known Files
 
-#### Known Files
+Katana supports `robots.txt` and `sitemap.xml`. These are parsed to discover new endpoints. We added `/wp-json/` for WordPress websites, and `favicon.ico` for favicon fingerprinting.
 
-Katana supports `robots.txt` and `sitemap.xml`. These are parsed to discover new endpoints but are never included in the list of valid endpoints. We added a few others.
+Katana current behavior is to abort all remaining known files when there is one error, such as when there is no `sitemap.xml` file.
 
 * [x] Robots.txt
 * [x] Sitemap.xml
 * [x] Favicon.ico
+* [x] WP JSON
 
-✍️ We will now see `/robots.txt` and `/sitemap.xml` when they were crawled.
+✍️ We will now see known files that were detected during crawling. If we cannot parse a known file, we will attempt other known files. New endpoints were added.

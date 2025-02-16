@@ -80,6 +80,7 @@ func NewNavigationRequestURLFromJavaScriptEndpoint(item *jsluice.URL, source, ta
 		item.Method = http.MethodGet
 	}
 
+	// Add Query Params To The URL
 	if len(item.QueryParams) > 0 {
 		parsedURL, err := url.Parse(requestURL)
 		if err == nil {

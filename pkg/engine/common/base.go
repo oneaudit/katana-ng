@@ -147,10 +147,7 @@ func (s *Shared) NewCrawlSessionWithURL(URL string) (*CrawlSession, error) {
 	queue.Push(&navigation.Request{Method: http.MethodGet, URL: URL, Depth: 0, SkipValidation: true}, 0)
 
 	if s.KnownFiles != nil {
-		navigationRequests, err := s.KnownFiles.Request(URL)
-		if err != nil {
-			gologger.Warning().Msgf("Could not parse known files for %s: %s\n", URL, err)
-		}
+		navigationRequests := s.KnownFiles.Request(URL)
 		s.Enqueue(queue, navigationRequests...)
 	}
 	httpclient, _, err := BuildHttpClient(s.Options.Dialer, s.Options.Options, func(resp *http.Response, depth int) {
