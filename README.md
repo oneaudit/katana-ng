@@ -64,3 +64,16 @@ Katana current behavior is to abort all remaining known files when there is one 
 * [x] WP JSON
 
 ✍️ We will now see known files that were detected during crawling. If we cannot parse a known file, we will attempt other known files. New endpoints were added.
+
+## Additional Endpoints
+
+We added a feature that allows users to specify additional endpoints to crawl. This is particularly useful for integrating results from other tools, such as [feroxbuster](https://github.com/epi052/feroxbuster), into your crawling process. This feature supports junk lines, meaning that any non-URL lines in the file will be ignored, allowing for flexibility in your input files.
+
+```console
+INPUT:
+    ...
+    -endpoints string   additional endpoints to crawl (ex: one URL per line, junk lines allowed)
+    ...
+```
+
+✍️ With the `-endpoints` flag, you can provide a file containing a list of URLs, one per line, which are added to the list of URLs to crawl.

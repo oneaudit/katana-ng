@@ -1,11 +1,14 @@
 package common
 
 import (
+	"bufio"
 	"bytes"
 	"context"
 	"io"
 	"net/http"
 	"net/url"
+	"os"
+	"strings"
 	"time"
 
 	"github.com/PuerkitoBio/goquery"
@@ -149,6 +152,47 @@ func (s *Shared) NewCrawlSessionWithURL(URL string) (*CrawlSession, error) {
 	if s.KnownFiles != nil {
 		navigationRequests := s.KnownFiles.Request(URL)
 		s.Enqueue(queue, navigationRequests...)
+	}
+	if s.Options.Options.EndpointsFile != "" {
+		file, err := os.Open(s.Options.Options.EndpointsFile)
+		if err != nil {
+			gologger.Warning().Msgf("Could not open endpoint file for %s: %s\n", URL, err.Error())
+		} else {
+			//goland:noinspection GoUnhandledErrorResult
+			defer file.Close()
+			// Create navigationRequests
+			var navigationRequests []*navigation.Request
+			scanner := bufio.NewScanner(file)
+			for scanner.Scan() {
+				line := scanner.Text()
+				if !strings.HasPrefix(line, URL) {
+					gologger.Debug().Msgf("Skipping URL (do not match baseURL): %s\n", line)
+					continue
+				}
+				parsedURL, err := url.Parse(line)
+				if err != nil {
+					gologger.Debug().Msgf("Could not parse URL %s: %s\n", line, err.Error())
+					continue
+				}
+
+				navigationRequests = append(navigationRequests, &navigation.Request{
+					Method:       http.MethodGet,
+					URL:          parsedURL.String(),
+					RootHostname: parsedURL.Hostname(),
+					Depth:        2,
+					Source:       line,
+					Attribute:    "line",
+					Tag:          "endpoints",
+				})
+			}
+			// Add them to the queue
+			s.Enqueue(queue, navigationRequests...)
+
+			// We show warnings for major errors
+			if err := scanner.Err(); err != nil {
+				gologger.Warning().Msgf("Error during parsing of endpoint file: %s", err.Error())
+			}
+		}
 	}
 	httpclient, _, err := BuildHttpClient(s.Options.Dialer, s.Options.Options, func(resp *http.Response, depth int) {
 		body, _ := io.ReadAll(resp.Body)

@@ -19,6 +19,8 @@ type OnResultCallback func(output.Result)
 type Options struct {
 	// URLs contains a list of URLs for crawling
 	URLs goflags.StringSlice
+	// EndpointsFile contains a list of endpoints for crawling
+	EndpointsFile string
 	// Resume the scan from the state stored in the resume config file
 	Resume string
 	// Exclude host matching specified filter ('cdn', 'private-ips', cidr, ip, regex)

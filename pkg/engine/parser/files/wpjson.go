@@ -22,7 +22,6 @@ func (r *WPJsonCrawler) Visit(URL string) ([]*navigation.Request, error) {
 	URL = strings.TrimSuffix(URL, "/")
 	requestURL := fmt.Sprintf("%s/wp-json/", URL)
 	req, err := retryablehttp.NewRequest(http.MethodGet, requestURL, nil)
-	fmt.Println(requestURL)
 	if err != nil {
 		return nil, errorutil.NewWithTag("wpjsoncrawler", "could not create request").Wrap(err)
 	}
