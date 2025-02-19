@@ -65,10 +65,13 @@ func (c *Crawler) makeRequest(s *common.CrawlSession, request *navigation.Reques
 	rawRequestBytes, _ := req.Dump()
 	request.Raw = string(rawRequestBytes)
 
+	// Save the status code regardless of filtering, errors, or special responses
+	response.StatusCode = resp.StatusCode
+
 	if err != nil {
 		return response, err
 	}
-	if resp.StatusCode == http.StatusSwitchingProtocols {
+	if response.StatusCode == http.StatusSwitchingProtocols {
 		return response, nil
 	}
 	limitReader := io.LimitReader(resp.Body, int64(c.Options.Options.BodyReadSize))
@@ -91,7 +94,6 @@ func (c *Crawler) makeRequest(s *common.CrawlSession, request *navigation.Reques
 	response.Resp = resp
 	response.Reader, err = goquery.NewDocumentFromReader(bytes.NewReader(data))
 	response.Reader.Url, _ = url.Parse(request.URL)
-	response.StatusCode = resp.StatusCode
 	response.Headers = utils.FlattenHeaders(resp.Header)
 	if c.Options.Options.FormExtraction {
 		response.Forms = append(response.Forms, utils.ParseFormFields(response.Reader)...)
