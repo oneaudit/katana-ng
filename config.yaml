@@ -7,6 +7,9 @@ filter-regex:
   - "/wp/"
   - "/wp-includes/"
   - "/node_modules/"
+  - "/phpsysinfo/.+"
+  - "/phpmyadmin/.+"
+  - "/adminer/.+"
   - "/wp-login.php"
   - "%5C"
 

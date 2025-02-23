@@ -20,7 +20,16 @@ type WPJsonCrawler struct {
 // Visit visits the provided URL with file crawlers
 func (r *WPJsonCrawler) Visit(URL string) ([]*navigation.Request, error) {
 	URL = strings.TrimSuffix(URL, "/")
-	requestURL := fmt.Sprintf("%s/wp-json/", URL)
+	requestURL := fmt.Sprintf("%s/wp-json/wp/v2/", URL)
+	res, err := r.visit(requestURL)
+	if err != nil {
+		requestURL = fmt.Sprintf("%s?rest_route=/wp/v2/", URL)
+		res, err = r.visit(requestURL)
+	}
+	return res, err
+}
+
+func (r *WPJsonCrawler) visit(requestURL string) ([]*navigation.Request, error) {
 	req, err := retryablehttp.NewRequest(http.MethodGet, requestURL, nil)
 	if err != nil {
 		return nil, errorutil.NewWithTag("wpjsoncrawler", "could not create request").Wrap(err)
