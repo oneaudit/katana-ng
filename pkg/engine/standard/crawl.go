@@ -65,15 +65,13 @@ func (c *Crawler) makeRequest(s *common.CrawlSession, request *navigation.Reques
 	rawRequestBytes, _ := req.Dump()
 	request.Raw = string(rawRequestBytes)
 
-	// Save the status code regardless of filtering, errors, or special responses
-	response.StatusCode = resp.StatusCode
-
 	if err != nil {
 		return response, err
 	}
 	if response.StatusCode == http.StatusSwitchingProtocols {
 		return response, nil
 	}
+	response.StatusCode = resp.StatusCode
 	limitReader := io.LimitReader(resp.Body, int64(c.Options.Options.BodyReadSize))
 	data, err := io.ReadAll(limitReader)
 	if err != nil {
