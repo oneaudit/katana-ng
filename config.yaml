@@ -2,8 +2,13 @@ headless: false
 show-browser: false
 headless-options: []
 chrome-data-dir: .chrome/
-list:
-  - "http://localhost:5000/"
+
+filter-regex:
+  - "/wp/"
+  - "/wp-includes/"
+  - "/node_modules/"
+  - "/wp-login.php"
+  - "%5C"
 
 max-response-size: 4194304
 delay: 0
@@ -35,5 +40,8 @@ disable-update-check: true
 
 output: output.txt
 jsonl: true
-silent: true
+silent: false
+debug: true
 verbose: true
+omit-raw: false
+#omit-body: false

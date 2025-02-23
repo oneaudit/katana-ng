@@ -178,7 +178,7 @@ func (s *Shared) NewCrawlSessionWithURL(URL string) (*CrawlSession, error) {
 				navigationRequests = append(navigationRequests, &navigation.Request{
 					Method:       http.MethodGet,
 					URL:          parsedURL.String(),
-					RootHostname: parsedURL.Hostname(),
+					RootHostname: hostname,
 					Depth:        2,
 					Source:       line,
 					Attribute:    "line",
