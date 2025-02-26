@@ -78,7 +78,9 @@ func (c *Crawler) makeRequest(s *common.CrawlSession, request *navigation.Reques
 		return response, err
 	}
 	if !c.Options.UniqueFilter.UniqueContent(data) {
-		return &navigation.Response{}, nil
+		return &navigation.Response{
+			StatusCode: resp.StatusCode,
+		}, nil
 	}
 
 	if c.Options.Wappalyzer != nil {

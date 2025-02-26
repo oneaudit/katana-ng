@@ -11,6 +11,7 @@ filter-regex:
   - "/phpmyadmin/.+"
   - "/adminer/.+"
   - "/wp-login.php"
+  - "/src/Composer/.+"
   - "%5C"
 
 max-response-size: 4194304
