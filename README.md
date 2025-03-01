@@ -77,3 +77,7 @@ INPUT:
 ```
 
 ✍️ With the `-endpoints` flag, you can provide a file containing a list of URLs, one per line, which are added to the list of URLs to crawl.
+
+## Minor Changes
+
+* 😄 We can omit non-HTML responses with `-onh` or `-omit-non-html`

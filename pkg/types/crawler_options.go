@@ -73,6 +73,7 @@ func NewCrawlerOptions(options *Options) (*CrawlerOptions, error) {
 		StoreFieldDir:         options.StoreFieldDir,
 		OmitRaw:               options.OmitRaw,
 		OmitBody:              options.OmitBody,
+		OmitNonHTML:           options.OmitNonHTML,
 		FieldConfig:           options.FieldConfig,
 		ErrorLogFile:          options.ErrorLogFile,
 		MatchRegex:            options.MatchRegex,

@@ -15,6 +15,7 @@ type Options struct {
 	NoClobber             bool
 	OmitRaw               bool
 	OmitBody              bool
+	OmitNonHTML           bool
 	KeepStdoutSimple      bool
 	OutputFile            string
 	Fields                string

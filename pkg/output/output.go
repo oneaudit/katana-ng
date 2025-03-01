@@ -53,6 +53,7 @@ type StandardWriter struct {
 	noClobber             bool
 	omitRaw               bool
 	omitBody              bool
+	omitNonHTML           bool
 	simpleStdout          bool
 	errorFile             *fileWriter
 	matchRegex            []*regexp.Regexp
@@ -75,6 +76,7 @@ func New(options Options) (Writer, error) {
 		noClobber:             options.NoClobber,
 		omitRaw:               options.OmitRaw,
 		omitBody:              options.OmitBody,
+		omitNonHTML:           options.OmitNonHTML,
 		matchRegex:            options.MatchRegex,
 		filterRegex:           options.FilterRegex,
 		extensionValidator:    options.ExtensionValidator,
@@ -202,6 +204,12 @@ func (w *StandardWriter) Write(result *Result) error {
 	}
 	if w.omitBody && result.HasResponse() {
 		result.Response.Body = ""
+	}
+	if w.omitNonHTML && result.HasResponse() {
+		if !strings.HasPrefix(result.Response.Headers["Content-Type"], "text/html") {
+			result.Response.Body = ""
+			result.Response.Raw = ""
+		}
 	}
 
 	if w.json {

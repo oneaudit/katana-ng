@@ -192,6 +192,7 @@ pipelines offering both headless and non-headless crawling.`)
 		flagSet.StringVarP(&options.StoreFieldDir, "store-field-dir", "sfd", "", "store per-host field to custom directory"),
 		flagSet.BoolVarP(&options.OmitRaw, "omit-raw", "or", false, "omit raw requests/responses from jsonl output"),
 		flagSet.BoolVarP(&options.OmitBody, "omit-body", "ob", false, "omit response body from jsonl output"),
+		flagSet.BoolVarP(&options.OmitNonHTML, "omit-non-html", "onh", false, "omit response from jsonl output if it is not HTML"),
 		flagSet.BoolVarP(&options.JSON, "jsonl", "j", false, "write output in jsonl format"),
 		flagSet.BoolVarP(&options.NoColors, "no-color", "nc", false, "disable output content coloring (ANSI escape codes)"),
 		flagSet.BoolVar(&options.Silent, "silent", false, "display output only"),

@@ -33,11 +33,16 @@ investigate-directories: true
 disable-default-extension-filter: true
 field-scope: rdn
 
+extension-filter:
+  - woff
+  - woff2
+
 known-files: all
 automatic-form-fill: true
 js-crawl: true
 jsluice: true
 xhr-extraction: true
+tech-detect: true
 
 update: false
 disable-update-check: true
@@ -48,4 +53,5 @@ silent: false
 debug: true
 verbose: true
 omit-raw: false
-#omit-body: false
+omit-body: false
+omit-non-html: true

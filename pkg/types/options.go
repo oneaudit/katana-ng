@@ -135,6 +135,8 @@ type Options struct {
 	OmitRaw bool
 	// OmitBody omits the response body from the output
 	OmitBody bool
+	// OmitNonHTML omits the response from the output if it is not HTML
+	OmitNonHTML bool
 	// ChromeDataDir : 	Specify the --user-data-dir to chrome binary to preserve sessions
 	ChromeDataDir string
 	// HeadlessNoIncognito specifies if chrome should be started without incognito mode
