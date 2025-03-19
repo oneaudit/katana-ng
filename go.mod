@@ -1,6 +1,6 @@
 module github.com/oneaudit/katana-ng
 
-go 1.23
+go 1.23.0
 
 require (
 	github.com/BishopFox/jsluice v0.0.0-20240110145140-0ddfab153e06

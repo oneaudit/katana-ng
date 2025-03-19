@@ -42,7 +42,7 @@ automatic-form-fill: true
 js-crawl: true
 jsluice: true
 xhr-extraction: true
-tech-detect: true
+tech-detect: false
 
 update: false
 disable-update-check: true
