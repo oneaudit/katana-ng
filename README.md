@@ -78,6 +78,46 @@ INPUT:
 
 ✍️ With the `-endpoints` flag, you can provide a file containing a list of URLs, one per line, which are added to the list of URLs to crawl.
 
+## Simplified Usage As A Library 🚀
+
+Most of Katana logic is stored inside the `internal` package, making it hard for users to smoothly use the library in their project. Aside from the cancel/resume feature, the `RunKatana` function for `nuclei-ng` do the following:
+
+* ✅ Parse a configuration file to update Options
+* ✅ Parse form config configuration file for automatic form filling
+* ✅ Validating the crawler configuration
+* ✅ Initialize specific parsers such as `jsluice`
+* ✅ Select the crawler type based on options
+* ✅ Parses and handle a list of URLs
+
+As a side note, you can achieve a part of it by using this [snippet](https://github.com/projectdiscovery/katana?tab=readme-ov-file#katana-as-a-library) .
+
+```go
+package main
+
+import (
+	"github.com/oneaudit/katana-ng/pkg/api"
+	"github.com/oneaudit/katana-ng/pkg/types"
+	"github.com/projectdiscovery/gologger"
+)
+
+func main() {
+	options := &types.Options{
+		RateLimit:     150,
+		Timeout:       5,
+		URLs: []string{
+			"https://example.com",
+		},
+		OutputFile: "output.txt",
+	}
+	options.ConfigureOutput() // logging
+	err := api.RunKatana(options, "")
+	if err != nil {
+		gologger.Fatal().Msgf("Could not crawl: %v", err.Error())
+	}
+}
+
+```
+
 ## Minor Changes
 
 * 😄 We can omit non-HTML responses with `-onh` or `-omit-non-html`
