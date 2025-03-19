@@ -83,37 +83,37 @@ INPUT:
 Most of Katana logic is stored inside the `internal` package, making it hard for users to smoothly use the library in their project. Aside from the cancel/resume feature, the `RunKatana` function for `nuclei-ng` do the following:
 
 * ✅ Parse a configuration file to update Options
-* ✅ Parse form config configuration file for automatic form filling
-* ✅ Validating the crawler configuration
+* ✅ Parse the form configuration file for automatic form filling
+* ✅ Validate the crawler configuration
 * ✅ Initialize specific parsers such as `jsluice`
 * ✅ Select the crawler type based on options
 * ✅ Parses and handle a list of URLs
 
-As a side note, you can achieve a part of it by using this [snippet](https://github.com/projectdiscovery/katana?tab=readme-ov-file#katana-as-a-library) .
+As a side note, you can achieve a part of it by using this [snippet](https://github.com/projectdiscovery/katana?tab=readme-ov-file#katana-as-a-library).
 
 ```go
 package main
 
 import (
-	"github.com/oneaudit/katana-ng/pkg/api"
-	"github.com/oneaudit/katana-ng/pkg/types"
-	"github.com/projectdiscovery/gologger"
+    "github.com/oneaudit/katana-ng/pkg/api"
+    "github.com/oneaudit/katana-ng/pkg/types"
+    "github.com/projectdiscovery/gologger"
 )
 
 func main() {
-	options := &types.Options{
-		RateLimit:     150,
-		Timeout:       5,
-		URLs: []string{
-			"https://example.com",
-		},
-		OutputFile: "output.txt",
-	}
-	options.ConfigureOutput() // logging
-	err := api.RunKatana(options, "")
-	if err != nil {
-		gologger.Fatal().Msgf("Could not crawl: %v", err.Error())
-	}
+    options := &types.Options{
+        RateLimit:     150,
+        Timeout:       5,
+        URLs: []string{
+            "https://example.com",
+        },
+        OutputFile: "output.txt",
+    }
+    options.ConfigureOutput() // logging
+    err := api.RunKatana(options, "")
+    if err != nil {
+        gologger.Fatal().Msgf("Could not crawl: %v", err.Error())
+    }
 }
 
 ```
