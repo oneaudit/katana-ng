@@ -1,4 +1,4 @@
-package runner
+package api
 
 import (
 	"strings"
@@ -11,7 +11,7 @@ import (
 
 // ExecuteCrawling executes the crawling main loop
 func (r *Runner) ExecuteCrawling() error {
-	if r.crawler == nil {
+	if r.Crawler == nil {
 		return errorutil.New("crawler is not initialized")
 	}
 	inputs := r.parseInputs()
@@ -19,14 +19,14 @@ func (r *Runner) ExecuteCrawling() error {
 		return errorutil.New("no input provided for crawling")
 	}
 	for _, input := range inputs {
-		_ = r.state.InFlightUrls.Set(addSchemeIfNotExists(input), struct{}{})
+		_ = r.State.InFlightUrls.Set(addSchemeIfNotExists(input), struct{}{})
 	}
 
-	defer r.crawler.Close()
+	defer r.Crawler.Close()
 
-	wg := sizedwaitgroup.New(r.options.Parallelism)
+	wg := sizedwaitgroup.New(r.Options.Parallelism)
 	for _, input := range inputs {
-		if !r.networkpolicy.Validate(input) {
+		if !r.Networkpolicy.Validate(input) {
 			gologger.Info().Msgf("Skipping excluded host %s", input)
 			continue
 		}
@@ -35,12 +35,12 @@ func (r *Runner) ExecuteCrawling() error {
 		go func(input string) {
 			defer wg.Done()
 
-			if err := r.crawler.Crawl(input); err != nil {
+			if err := r.Crawler.Crawl(input); err != nil {
 				gologger.Warning().Msgf("Could not crawl %s: %s", input, err)
 			}
-			r.state.InFlightUrls.Delete(input)
-			}(input)
-		}
+			r.State.InFlightUrls.Delete(input)
+		}(input)
+	}
 	wg.Wait()
 	return nil
 }

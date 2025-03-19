@@ -2,6 +2,7 @@ package runner
 
 import (
 	"encoding/json"
+	"github.com/oneaudit/katana-ng/pkg/api"
 	"os"
 	"strconv"
 
@@ -11,7 +12,6 @@ import (
 	"github.com/oneaudit/katana-ng/pkg/engine/standard"
 	"github.com/oneaudit/katana-ng/pkg/types"
 	"github.com/projectdiscovery/gologger"
-	"github.com/projectdiscovery/mapcidr"
 	"github.com/projectdiscovery/mapcidr/asn"
 	"github.com/projectdiscovery/networkpolicy"
 	errorutil "github.com/projectdiscovery/utils/errors"
@@ -19,26 +19,10 @@ import (
 	iputil "github.com/projectdiscovery/utils/ip"
 	mapsutil "github.com/projectdiscovery/utils/maps"
 	updateutils "github.com/projectdiscovery/utils/update"
-	"go.uber.org/multierr"
 )
 
-// Runner creates the required resources for crawling
-// and executes the crawl process.
-type Runner struct {
-	crawlerOptions *types.CrawlerOptions
-	stdin          bool
-	crawler        engine.Engine
-	options        *types.Options
-	state          *RunnerState
-	networkpolicy  *networkpolicy.NetworkPolicy
-}
-
-type RunnerState struct {
-	InFlightUrls *mapsutil.SyncLockMap[string, struct{}]
-}
-
 // New returns a new crawl runner structure
-func New(options *types.Options) (*Runner, error) {
+func New(options *types.Options) (*api.Runner, error) {
 	// create the resume configuration structure
 	if options.ShouldResume() {
 		gologger.Info().Msg("Resuming from save checkpoint")
@@ -48,7 +32,7 @@ func New(options *types.Options) (*Runner, error) {
 			return nil, err
 		}
 
-		runnerState := &RunnerState{}
+		runnerState := &api.RunnerState{}
 		err = json.Unmarshal(file, runnerState)
 		if err != nil {
 			return nil, err
@@ -120,7 +104,7 @@ func New(options *types.Options) (*Runner, error) {
 			npOptions.DenyList = append(npOptions.DenyList, exclude)
 		case asn.IsASN(exclude):
 			// update this to use networkpolicy pkg once https://github.com/projectdiscovery/networkpolicy/pull/55 is merged
-			ips := expandASNInputValue(exclude)
+			ips := api.ExpandASNInputValue(exclude)
 			npOptions.DenyList = append(npOptions.DenyList, ips...)
 		case iputil.IsPort(exclude):
 			port, _ := strconv.Atoi(exclude)
@@ -131,46 +115,14 @@ func New(options *types.Options) (*Runner, error) {
 	}
 
 	np, _ := networkpolicy.New(npOptions)
-	runner := &Runner{
-		options:        options,
-		stdin:          fileutil.HasStdin(),
-		crawlerOptions: crawlerOptions,
-		crawler:        crawler,
-		state:          &RunnerState{InFlightUrls: mapsutil.NewSyncLockMap[string, struct{}]()},
-		networkpolicy:  np,
+	runner := &api.Runner{
+		Options:        options,
+		Stdin:          fileutil.HasStdin(),
+		CrawlerOptions: crawlerOptions,
+		Crawler:        crawler,
+		State:          &api.RunnerState{InFlightUrls: mapsutil.NewSyncLockMap[string, struct{}]()},
+		Networkpolicy:  np,
 	}
 
 	return runner, nil
-}
-
-// Close closes the runner releasing resources
-func (r *Runner) Close() error {
-	return multierr.Combine(
-		r.crawler.Close(),
-		r.crawlerOptions.Close(),
-	)
-}
-
-func (r *Runner) SaveState(resumeFilename string) error {
-	runnerState := r.state
-	data, _ := json.Marshal(runnerState)
-	return os.WriteFile(resumeFilename, data, os.ModePerm)
-}
-
-func expandCIDRInputValue(value string) []string {
-	var ips []string
-	ipsCh, _ := mapcidr.IPAddressesAsStream(value)
-	for ip := range ipsCh {
-		ips = append(ips, ip)
-	}
-	return ips
-}
-
-func expandASNInputValue(value string) []string {
-	var ips []string
-	cidrs, _ := asn.GetCIDRsForASNNum(value)
-	for _, cidr := range cidrs {
-		ips = append(ips, expandCIDRInputValue(cidr.String())...)
-	}
-	return ips
 }

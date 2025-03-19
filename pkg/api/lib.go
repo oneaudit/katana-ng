@@ -1,19 +1,111 @@
-package runner
+package api
 
 import (
+	"github.com/oneaudit/katana-ng/pkg/engine"
+	"github.com/oneaudit/katana-ng/pkg/engine/hybrid"
+	"github.com/oneaudit/katana-ng/pkg/engine/parser"
+	"github.com/oneaudit/katana-ng/pkg/engine/standard"
 	"github.com/oneaudit/katana-ng/pkg/types"
 	"github.com/oneaudit/katana-ng/pkg/utils"
 	"github.com/projectdiscovery/gologger"
-	"github.com/projectdiscovery/gologger/formatter"
+	"github.com/projectdiscovery/mapcidr/asn"
+	"github.com/projectdiscovery/networkpolicy"
 	errorutil "github.com/projectdiscovery/utils/errors"
 	fileutil "github.com/projectdiscovery/utils/file"
+	iputil "github.com/projectdiscovery/utils/ip"
+	mapsutil "github.com/projectdiscovery/utils/maps"
 	"gopkg.in/yaml.v3"
 	"os"
 	"path/filepath"
 	"regexp"
+	"strconv"
 )
 
-// validateOptions validates the provided options for crawler
+func RunKatana(options *types.Options, cfgFile string) error {
+	// Configuration
+	flagSet := MakeFlagSet(options, cfgFile)
+	if cfgFile != "" {
+		if err := flagSet.MergeConfigFile(cfgFile); err != nil {
+			return errorutil.NewWithErr(err).Msgf("could not read config file")
+		}
+	}
+	if err := initExampleFormFillConfig(); err != nil {
+		return errorutil.NewWithErr(err).Msgf("could not init default config")
+	}
+	if err := validateOptions(options); err != nil {
+		return errorutil.NewWithErr(err).Msgf("could not validate options")
+	}
+	if options.FormConfig != "" {
+		if err := readCustomFormConfig(options.FormConfig); err != nil {
+			return err
+		}
+	}
+	// Initialization
+	crawlerOptions, err := types.NewCrawlerOptions(options)
+	if err != nil {
+		return errorutil.NewWithErr(err).Msgf("could not create crawler options")
+	}
+	parser.InitWithOptions(options)
+
+	var crawler engine.Engine
+
+	switch {
+	case options.Headless:
+		crawler, err = hybrid.New(crawlerOptions)
+	default:
+		crawler, err = standard.New(crawlerOptions)
+	}
+	if err != nil {
+		return errorutil.NewWithErr(err).Msgf("could not create standard crawler")
+	}
+
+	var npOptions networkpolicy.Options
+
+	for _, exclude := range options.Exclude {
+		switch {
+		case exclude == "cdn":
+			//implement cdn check in netoworkpolicy pkg??
+			continue
+		case exclude == "private-ips":
+			npOptions.DenyList = append(npOptions.DenyList, networkpolicy.DefaultIPv4Denylist...)
+			npOptions.DenyList = append(npOptions.DenyList, networkpolicy.DefaultIPv4DenylistRanges...)
+			npOptions.DenyList = append(npOptions.DenyList, networkpolicy.DefaultIPv6Denylist...)
+			npOptions.DenyList = append(npOptions.DenyList, networkpolicy.DefaultIPv6DenylistRanges...)
+		case iputil.IsCIDR(exclude):
+			npOptions.DenyList = append(npOptions.DenyList, exclude)
+		case asn.IsASN(exclude):
+			// update this to use networkpolicy pkg once https://github.com/projectdiscovery/networkpolicy/pull/55 is merged
+			ips := ExpandASNInputValue(exclude)
+			npOptions.DenyList = append(npOptions.DenyList, ips...)
+		case iputil.IsPort(exclude):
+			port, _ := strconv.Atoi(exclude)
+			npOptions.DenyPortList = append(npOptions.DenyPortList, port)
+		default:
+			npOptions.DenyList = append(npOptions.DenyList, exclude)
+		}
+	}
+
+	np, _ := networkpolicy.New(npOptions)
+	katanaRunner := &Runner{
+		Options:        options,
+		Stdin:          false,
+		CrawlerOptions: crawlerOptions,
+		Crawler:        crawler,
+		State:          &RunnerState{InFlightUrls: mapsutil.NewSyncLockMap[string, struct{}]()},
+		Networkpolicy:  np,
+	}
+	if katanaRunner == nil {
+		gologger.Fatal().Msgf("could not create runner: %s\n", err)
+		return nil
+	}
+	defer katanaRunner.Close()
+	if err := katanaRunner.ExecuteCrawling(); err != nil {
+		gologger.Fatal().Msgf("could not execute crawling: %s", err)
+	}
+
+	return nil
+}
+
 func validateOptions(options *types.Options) error {
 	if options.MaxDepth <= 0 && options.CrawlDuration.Seconds() <= 0 {
 		return errorutil.New("either max-depth or crawl-duration must be specified")
@@ -59,7 +151,6 @@ func validateOptions(options *types.Options) error {
 		gologger.Info().Msgf("Depth automatically set to 3 to accommodate the `--known-files` option (originally set to %d).", options.MaxDepth)
 		options.MaxDepth = 3
 	}
-	gologger.DefaultLogger.SetFormatter(formatter.NewCLI(options.NoColors))
 	return nil
 }
 
