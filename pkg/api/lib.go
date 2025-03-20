@@ -21,14 +21,18 @@ import (
 	"strconv"
 )
 
-func RunKatana(options *types.Options, cfgFile string) error {
-	// Configuration
-	flagSet := MakeFlagSet(options, cfgFile)
+func CreateDefaultOptionsFromFile(cfgFile string) (*types.Options, error) {
+	cfgOptions := &types.Options{}
+	flagSet := MakeFlagSet(cfgOptions, cfgFile)
 	if cfgFile != "" {
 		if err := flagSet.MergeConfigFile(cfgFile); err != nil {
-			return errorutil.NewWithErr(err).Msgf("could not read config file")
+			return nil, errorutil.NewWithErr(err).Msgf("could not read config file")
 		}
 	}
+	return cfgOptions, nil
+}
+
+func RunKatana(options *types.Options) error {
 	if err := initExampleFormFillConfig(); err != nil {
 		return errorutil.NewWithErr(err).Msgf("could not init default config")
 	}

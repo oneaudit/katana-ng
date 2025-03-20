@@ -47,7 +47,6 @@ tech-detect: false
 update: false
 disable-update-check: true
 
-output: output.txt
 jsonl: true
 silent: false
 debug: true

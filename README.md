@@ -78,7 +78,7 @@ INPUT:
 
 ✍️ With the `-endpoints` flag, you can provide a file containing a list of URLs, one per line, which are added to the list of URLs to crawl.
 
-## Simplified Usage As A Library 🚀
+## Simplified Usage As A Library
 
 Most of Katana logic is stored inside the `internal` package, making it hard for users to smoothly use the library in their project. Aside from the cancel/resume feature, the `RunKatana` function for `nuclei-ng` do the following:
 
