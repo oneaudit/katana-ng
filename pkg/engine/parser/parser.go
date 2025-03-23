@@ -96,7 +96,7 @@ func urlPathsParser(resp *navigation.Response) (navigationRequests []*navigation
 	for _, newURL := range utils.ExplodeURLInPaths(resp.Resp.Request.URL.String()) {
 		navigationRequests = append(
 			navigationRequests,
-			navigation.NewNavigationRequestURLFromResponse(newURL, resp.Resp.Request.URL.String(), "url", "path", resp),
+			navigation.NewNavigationRequestURLFromResponse(newURL, resp.Resp.Request.URL.String(), "dirb", "dirb", resp),
 		)
 	}
 	return

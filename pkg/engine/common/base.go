@@ -273,7 +273,10 @@ func (s *Shared) Do(crawlSession *CrawlSession, doRequest DoRequestFunc) error {
 
 			resp, err := doRequest(crawlSession, req)
 
-			if inScope {
+			// it's dirty but if we tried something and it did not work
+			// then, it should not be in the output imo
+			// (this should reduce the noise when directories are always empty)
+			if inScope && !(req.Tag == "dirb" && resp.StatusCode == 404) {
 				s.Output(req, resp, err)
 			}
 

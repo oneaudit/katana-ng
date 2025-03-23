@@ -31,7 +31,7 @@ SCOPE:
    ...
 ```
 
-✍️ With this flag, folders such as `/assets/` and `/assets/img/` will be crawled. However, note that these folders will still appear in the output, even if they couldn't be crawled due to errors like `403` or `404`.
+✍️ With this flag, folders such as `/assets/` and `/assets/img/` will be crawled. However, note that these folders will not appear in the output if the response status code was `404`.
 
 ## JSLuice Improved Support
 
@@ -121,3 +121,4 @@ func main() {
 ## Minor Changes
 
 * 😄 We can omit non-HTML responses with `-onh` or `-omit-non-html`
+* ⚠️ Adding additional data (status code, body and headers) for duplicate responses
