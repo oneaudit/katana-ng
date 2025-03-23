@@ -86,8 +86,8 @@ Most of Katana logic is stored inside the `internal` package, making it hard for
 * ✅ Parse the form configuration file for automatic form filling
 * ✅ Validate the crawler configuration
 * ✅ Initialize specific parsers such as `jsluice`
-* ✅ Select the crawler type based on options
-* ✅ Parses and handle a list of URLs
+* ✅ Select the crawler type based on options (standard or hybrid)
+* ✅ Parse and handle a list of URLs
 
 As a side note, you can achieve a part of it by using this [snippet](https://github.com/projectdiscovery/katana?tab=readme-ov-file#katana-as-a-library).
 
@@ -101,21 +101,17 @@ import (
 )
 
 func main() {
-    options := &types.Options{
-        RateLimit:     150,
-        Timeout:       5,
-        URLs: []string{
-            "https://example.com",
-        },
-        OutputFile: "output.txt",
+    options, _ := api.CreateDefaultOptionsFromFile("config.yaml")
+    options.URLs = []string{
+        "http://localhost:5000/",
     }
+    options.OutputFile = "output.txt"
     options.ConfigureOutput() // logging
-    err := api.RunKatana(options, "")
+    err := api.RunKatana(options)
     if err != nil {
         gologger.Fatal().Msgf("Could not crawl: %v", err.Error())
     }
 }
-
 ```
 
 ## Minor Changes
